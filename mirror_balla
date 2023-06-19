@@ -1,0 +1,74 @@
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Добро пожаловать в игру 'Шарик в окно'!");
+
+        // Создаем окно дома
+        Window window = new Window();
+
+        while (true)
+        {
+            Console.WriteLine("Введите координаты для броска (x, y):");
+            string input = Console.ReadLine();
+            string[] coordinates = input.Split(',');
+
+            if (coordinates.Length != 2)
+            {
+                Console.WriteLine("Некорректный ввод координат. Попробуйте еще раз.");
+                continue;
+            }
+
+            int x, y;
+            if (!int.TryParse(coordinates[0], out x) || !int.TryParse(coordinates[1], out y))
+            {
+                Console.WriteLine("Некорректный ввод координат. Попробуйте еще раз.");
+                continue;
+            }
+
+            // Создаем шарик с указанными координатами броска
+            Ball ball = new Ball(x, y);
+
+            // Проверяем, попал ли шарик в окно
+            bool isHit = window.IsHit(ball);
+
+            if (isHit)
+            {
+                Console.WriteLine("Поздравляю, вы попали в окно!");
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Вы промахнулись. Попробуйте еще раз.");
+            }
+        }
+
+        Console.WriteLine("Спасибо за игру!");
+        Console.ReadLine();
+    }
+}
+
+class Window
+{
+    private const int WindowX = 5;
+    private const int WindowY = 5;
+
+    public bool IsHit(Ball ball)
+    {
+        return ball.X == WindowX && ball.Y == WindowY;
+    }
+}
+
+class Ball
+{
+    public int X { get; }
+    public int Y { get; }
+
+    public Ball(int x, int y)
+    {
+        X = x;
+        Y = y;
+    }
+}
